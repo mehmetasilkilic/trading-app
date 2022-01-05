@@ -6,11 +6,13 @@ import {
   CssBaseline,
   TextField
 } from '@mui/material'
-import { AppBarComponent } from "./components";
+import { AppBarComponent, Menu, Sidebar } from "./components";
+import { ROUTES } from "./routes";
 
 const App: React.FC = () => {
 
   const [themeMode, setThemeMode] = useState<"light" | "dark">("dark");
+  const [sidebarToggle, setSidebarToggle] = useState<boolean>(false);
   const theme = createTheme({
     palette: {
       mode: themeMode,
@@ -20,8 +22,9 @@ const App: React.FC = () => {
     },
   });
   const handleDrawerToggle = React.useCallback(() => {
+    setSidebarToggle(!sidebarToggle)
+  }, [sidebarToggle]);
 
-  }, []);
   const onThemeChange = React.useCallback(() => {
 
   }, []);
@@ -32,6 +35,13 @@ const App: React.FC = () => {
       <AppBarComponent
         handleDrawerToggle={handleDrawerToggle}
         onThemeChange={onThemeChange}
+        isDarkMode={themeMode === "dark"}
+        isDrawerOpen={sidebarToggle}
+      />
+      <Sidebar
+        isOpen={sidebarToggle}
+        handleDrawerToggle={handleDrawerToggle}
+        children={<Menu links={ROUTES} />}
       />
     </ThemeProvider>
   );
