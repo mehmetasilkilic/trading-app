@@ -1,5 +1,6 @@
 /* import "./assets/sass/main.scss" */
 import React, { useState } from "react";
+import { Provider } from "react-redux";
 import {
   createTheme,
   ThemeProvider,
@@ -9,6 +10,7 @@ import { AppBarComponent, Menu, Sidebar } from "./components";
 import { BLOTTER, MAIN, ROUTES, TRADETICKET } from "./routes";
 import { Route, Routes, useNavigate } from "react-router-dom";
 import { Blotter, Dashboard, Tradeticket } from "./features";
+import { store } from "./store";
 
 const App: React.FC = () => {
 
@@ -32,30 +34,32 @@ const App: React.FC = () => {
   }, [themeMode]);
 
   const menuClickHandler = React.useCallback((link) => {
-    navigate(link.path);
-    setSidebarToggle(!sidebarToggle)
+    navigate(link);
+    setSidebarToggle(!sidebarToggle);
   }, [navigate, sidebarToggle]);
 
   return (
-    <ThemeProvider theme={theme}>
-      <CssBaseline />
-      <AppBarComponent
-        handleDrawerToggle={handleDrawerToggle}
-        onThemeChange={onThemeChange}
-        isDarkMode={themeMode === "dark"}
-        isDrawerOpen={sidebarToggle}
-      />
-      <Sidebar
-        isOpen={sidebarToggle}
-        handleDrawerToggle={handleDrawerToggle}
-        children={<Menu links={ROUTES} menuClickHandler={menuClickHandler} />}
-      />
-      <Routes>
-        <Route path={MAIN} element={<Dashboard />} />
-        <Route path={BLOTTER} element={<Blotter />} />
-        <Route path={TRADETICKET} element={<Tradeticket />} />
-      </Routes>
-    </ThemeProvider>
+    <Provider store={store}>
+      <ThemeProvider theme={theme}>
+        <CssBaseline />
+        <AppBarComponent
+          handleDrawerToggle={handleDrawerToggle}
+          onThemeChange={onThemeChange}
+          isDarkMode={themeMode === "dark"}
+          isDrawerOpen={sidebarToggle}
+        />
+        <Sidebar
+          isOpen={sidebarToggle}
+          handleDrawerToggle={handleDrawerToggle}
+          children={<Menu links={ROUTES} menuClickHandler={menuClickHandler} />}
+        />
+        <Routes>
+          <Route path={MAIN} element={<Dashboard />} />
+          <Route path={BLOTTER} element={<Blotter />} />
+          <Route path={TRADETICKET} element={<Tradeticket />} />
+        </Routes>
+      </ThemeProvider>
+    </Provider>
   );
 }
 
