@@ -11,4 +11,4 @@ export const tradesApi = createApi({
     })
 })
 
-export { useGet } = tradesApi;
+export const { useGetTradesQuery } = tradesApi;

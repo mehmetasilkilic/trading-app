@@ -47,11 +47,13 @@ export const DataGrid = <T,>({
                     ? "ag-theme-alpine-dark"
                     : "ag-theme-alpine"
                     }`}
+                style={{ ...size }}
             >
                 <AgGridReact
                     rowData={gridData}
                     onGridReady={onGridReady}
                     rowSelection="single"
+                    columnDefs={colDef}
                     defaultColDef={{
                         resizable: true,
                         filter: true,
